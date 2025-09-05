@@ -1,0 +1,241 @@
+import { usePostStore } from '@/stores/usePostStore';
+import { Loader as Loader2, RefreshCw } from 'lucide-react-native';
+import React, { useEffect } from 'react';
+import {
+  FlatList,
+  Pressable,
+  RefreshControl,
+  StyleSheet,
+  Text,
+  View
+} from 'react-native';
+import Animated, {
+  FadeInDown,
+  Layout,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring
+} from 'react-native-reanimated';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+
+interface PostItemProps {
+  post: {
+    id: number;
+    title: string;
+    body: string;
+    userId: number;
+  };
+  index: number;
+}
+
+function PostItem({ post, index }: PostItemProps) {
+  const scale = useSharedValue(1);
+  
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
+
+  const handlePressIn = () => {
+    scale.value = withSpring(0.95);
+  };
+
+  const handlePressOut = () => {
+    scale.value = withSpring(1);
+  };
+
+  return (
+    <AnimatedPressable
+      entering={FadeInDown.delay(index * 100).springify()}
+      layout={Layout.springify()}
+      style={[styles.postItem, animatedStyle]}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+    >
+      <Text style={styles.postTitle} numberOfLines={2}>
+        {post.title}
+      </Text>
+      <Text style={styles.postBody} numberOfLines={3}>
+        {post.body}
+      </Text>
+      <Text style={styles.postId}>Post #{post.id}</Text>
+    </AnimatedPressable>
+  );
+}
+
+export default function HomeScreen() {
+  const { posts, loading, error, fetchPosts, refreshData } = usePostStore();
+  const refreshIconRotation = useSharedValue(0);
+
+  const refreshIconStyle = useAnimatedStyle(() => ({
+    transform: [{ rotate: `${refreshIconRotation.value}deg` }],
+  }));
+
+  useEffect(() => {
+    fetchPosts();
+  }, [fetchPosts]);
+
+  const handleRefresh = async () => {
+    refreshIconRotation.value = withSpring(360, { duration: 1000 });
+    await refreshData();
+    refreshIconRotation.value = 0;
+  };
+
+  const renderPost = ({ item, index }: { item: any; index: number }) => (
+    <PostItem post={item} index={index} />
+  );
+
+  if (error) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>Error: {error}</Text>
+          <Pressable style={styles.retryButton} onPress={fetchPosts}>
+            <Text style={styles.retryText}>Retry</Text>
+          </Pressable>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Latest Posts</Text>
+        <Pressable onPress={handleRefresh} style={styles.refreshButton}>
+          <Animated.View style={refreshIconStyle}>
+            <RefreshCw size={24} color="#3b82f6" />
+          </Animated.View>
+        </Pressable>
+      </View>
+
+      {loading && posts.length === 0 ? (
+        <View style={styles.loadingContainer}>
+          <Animated.View
+            entering={FadeInDown.springify()}
+            style={styles.loadingContent}
+          >
+            <Loader2 size={32} color="#3b82f6" />
+            <Text style={styles.loadingText}>Loading posts...</Text>
+          </Animated.View>
+        </View>
+      ) : (
+        <FlatList
+          data={posts}
+          renderItem={renderPost}
+          keyExtractor={(item) => item.id.toString()}
+          contentContainerStyle={styles.listContent}
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={loading}
+              onRefresh={handleRefresh}
+              tintColor="#3b82f6"
+            />
+          }
+        />
+      )}
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#f8fafc',
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    backgroundColor: '#ffffff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#e5e7eb',
+  },
+  headerTitle: {
+    fontSize: 28,
+    fontFamily: 'Inter-Bold',
+    color: '#111827',
+  },
+  refreshButton: {
+    padding: 8,
+    borderRadius: 8,
+    backgroundColor: '#eff6ff',
+  },
+  listContent: {
+    padding: 16,
+  },
+  postItem: {
+    backgroundColor: '#ffffff',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
+    borderWidth: 1,
+    borderColor: '#f3f4f6',
+  },
+  postTitle: {
+    fontSize: 18,
+    fontFamily: 'Inter-SemiBold',
+    color: '#111827',
+    marginBottom: 8,
+    lineHeight: 24,
+  },
+  postBody: {
+    fontSize: 16,
+    fontFamily: 'Inter-Regular',
+    color: '#6b7280',
+    lineHeight: 24,
+    marginBottom: 12,
+  },
+  postId: {
+    fontSize: 14,
+    fontFamily: 'Inter-SemiBold',
+    color: '#3b82f6',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingContent: {
+    alignItems: 'center',
+  },
+  loadingText: {
+    marginTop: 12,
+    fontSize: 16,
+    fontFamily: 'Inter-Regular',
+    color: '#6b7280',
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  errorText: {
+    fontSize: 16,
+    fontFamily: 'Inter-Regular',
+    color: '#ef4444',
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  retryButton: {
+    backgroundColor: '#3b82f6',
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 8,
+  },
+  retryText: {
+    fontSize: 16,
+    fontFamily: 'Inter-SemiBold',
+    color: '#ffffff',
+  },
+});
