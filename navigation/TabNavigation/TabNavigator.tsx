@@ -1,7 +1,9 @@
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import HomeScreen from '@/screens/HomeScreen';
+import NotificationsScreen from '@/screens/NotificationScreen';
 import ProfileScreen from '@/screens/ProfileScreen';
+import SettingsScreen from '@/screens/SettingsScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Bell, Chrome as Home, Settings, User } from 'lucide-react-native';
 import { Platform } from 'react-native';
@@ -43,7 +45,7 @@ export default function TabNavigator() {
       />
       <Tab.Screen
         name="notification"
-        component={ProfileScreen}
+        component={NotificationsScreen}
         options={{
           title: 'Notification',
           tabBarIcon: ({ size, color }) => (
@@ -53,7 +55,7 @@ export default function TabNavigator() {
       />
       <Tab.Screen
         name="settings"
-        component={ProfileScreen}
+        component={SettingsScreen}
         options={{
           title: 'Settings',
           tabBarIcon: ({ size, color }) => (

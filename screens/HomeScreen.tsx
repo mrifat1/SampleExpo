@@ -3,6 +3,7 @@ import { Loader as Loader2, RefreshCw } from 'lucide-react-native';
 import React, { useEffect } from 'react';
 import {
   FlatList,
+  Platform,
   Pressable,
   RefreshControl,
   StyleSheet,
@@ -100,7 +101,7 @@ export default function HomeScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={Platform.OS === 'ios' ? ['top'] : ['top', 'left', 'right']}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Latest Posts</Text>
         <Pressable onPress={handleRefresh} style={styles.refreshButton}>
@@ -127,6 +128,7 @@ export default function HomeScreen() {
           keyExtractor={(item) => item.id.toString()}
           contentContainerStyle={styles.listContent}
           showsVerticalScrollIndicator={false}
+          contentInsetAdjustmentBehavior="automatic"
           refreshControl={
             <RefreshControl
               refreshing={loading}
@@ -143,17 +145,27 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8fafc',
+    backgroundColor: '#F0FFFF',
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginBottom: 16,
     paddingHorizontal: 20,
     paddingVertical: 16,
     backgroundColor: '#ffffff',
     borderBottomWidth: 1,
     borderBottomColor: '#e5e7eb',
+    width: '91%',
+    alignSelf:'center',
+    borderRadius: 16,
+    elevation: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    marginTop: 10
   },
   headerTitle: {
     fontSize: 28,
@@ -166,12 +178,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#eff6ff',
   },
   listContent: {
-    padding: 16,
+    paddingHorizontal: 16,
+    ...Platform.select({
+      ios: {
+        paddingBottom:80, 
+      },
+      android: {
+        paddingBottom: 20, 
+      },
+    }),
   },
   postItem: {
     backgroundColor: '#ffffff',
     borderRadius: 12,
     padding: 16,
+    marginHorizontal: 0,
     marginBottom: 12,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },

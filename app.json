@@ -4,14 +4,17 @@
         "slug": "SampleExpo",
         "version": "1.0.0",
         "orientation": "portrait",
-        "icon": "./assets/images/icon.png",
+        "icon": "./assets/images/mainIcon.png",
         "scheme": "sampleexpo",
         "userInterfaceStyle": "automatic",
         "newArchEnabled": true,
         "ios": {
+            "bundleIdentifier": "com.mahmudrifat.sampleexpo",
             "supportsTablet": true
         },
         "android": {
+            "package": "com.mahmudrifat.sampleexpo",
+            "googleServicesFile": "./google-services.json",
             "adaptiveIcon": {
                 "foregroundImage": "./assets/images/adaptive-icon.png",
                 "backgroundColor": "#ffffff"
@@ -23,15 +26,21 @@
             "favicon": "./assets/images/favicon.png"
         },
         "plugins": [
-            [
+            "expo-notifications", [
                 "expo-splash-screen",
                 {
-                    "image": "./assets/images/splash-icon.png",
+                    "image": "./assets/images/mainIcon.png",
                     "imageWidth": 200,
                     "resizeMode": "contain",
                     "backgroundColor": "#ffffff"
                 }
             ]
-        ]
+        ],
+        "extra": {
+            "eas": {
+                "projectId": "c70fc672-b596-4ec4-b796-78930d60ec35"
+            }
+        },
+        "owner": "mahmudrifat"
     }
 }

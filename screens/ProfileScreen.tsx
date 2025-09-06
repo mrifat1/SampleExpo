@@ -72,9 +72,6 @@ export default function ProfileScreen() {
           style={styles.header}
         >
           <Text style={styles.headerTitle}>Edit Profile</Text>
-          <Text style={styles.headerSubtitle}>
-            Update your personal information
-          </Text>
         </Animated.View>
 
         <Animated.View
@@ -82,6 +79,7 @@ export default function ProfileScreen() {
           style={styles.form}
         >
           <View style={styles.inputGroup}>
+            
             <Text style={styles.label}>Full Name</Text>
             <Controller
               control={control}
@@ -205,27 +203,35 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8fafc',
+    backgroundColor: '#F0FFFF',
   },
   scrollView: {
     flex: 1,
   },
   header: {
-    padding: 20,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
     backgroundColor: '#ffffff',
     borderBottomWidth: 1,
     borderBottomColor: '#e5e7eb',
+    width: '91%',
+    alignSelf:'center',
+    borderRadius: 16,
+    elevation: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    marginTop: 10
   },
   headerTitle: {
     fontSize: 28,
     fontFamily: 'Inter-Bold',
     color: '#111827',
     marginBottom: 4,
-  },
-  headerSubtitle: {
-    fontSize: 16,
-    fontFamily: 'Inter-Regular',
-    color: '#6b7280',
   },
   form: {
     padding: 20,
@@ -251,7 +257,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 2,
-    elevation: 1,
+    // elevation: 1,
   },
   inputIcon: {
     marginRight: 12,
