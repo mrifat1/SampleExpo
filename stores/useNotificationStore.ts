@@ -16,10 +16,11 @@ interface NotificationStore {
 }
 
 Notifications.setNotificationHandler({
-  handleNotification: async () => ({
+  handleNotification: async (notification: Notifications.Notification) => ({
     shouldShowBanner: true,
     shouldPlaySound: true,
     shouldSetBadge: false,
+    shouldShowList: true,
   }),
 });
 
@@ -74,7 +75,7 @@ export const useNotificationStore = create<NotificationStore>((set, get) => ({
         body: "This is a test notification from your Expo app!",
         data: { type: 'navigate_to_profile', testData: 'Goes here' },
       },
-      trigger: { seconds: 2 },
+      trigger: {type: 'timeInterval', seconds: 1},
     });
   },
 
@@ -90,7 +91,6 @@ export const useNotificationStore = create<NotificationStore>((set, get) => ({
       const data = response.notification.request.content.data;
       console.log("Notification tapped:", data?.type);
 
-      // Example navigation handler
       if (data?.type === 'navigate_to_notifications') {
         navigate('notification', { fromPush: true });
       } else if (data?.type === 'navigate_to_profile') {
@@ -99,7 +99,6 @@ export const useNotificationStore = create<NotificationStore>((set, get) => ({
     });
 
     Notifications.addNotificationReceivedListener((notification) => {
-      // App is foreground, push to local store
       set((state) => ({
         notifications: [...state.notifications, notification],
       }));

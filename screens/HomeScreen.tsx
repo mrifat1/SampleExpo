@@ -1,3 +1,4 @@
+import PostItemCard from '@/components/PostItemCard';
 import { usePostStore } from '@/stores/usePostStore';
 import { Loader as Loader2, RefreshCw } from 'lucide-react-native';
 import React, { useEffect } from 'react';
@@ -12,7 +13,6 @@ import {
 } from 'react-native';
 import Animated, {
   FadeInDown,
-  Layout,
   useAnimatedStyle,
   useSharedValue,
   withSpring
@@ -20,50 +20,6 @@ import Animated, {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
-
-interface PostItemProps {
-  post: {
-    id: number;
-    title: string;
-    body: string;
-    userId: number;
-  };
-  index: number;
-}
-
-function PostItem({ post, index }: PostItemProps) {
-  const scale = useSharedValue(1);
-  
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
-  }));
-
-  const handlePressIn = () => {
-    scale.value = withSpring(0.95);
-  };
-
-  const handlePressOut = () => {
-    scale.value = withSpring(1);
-  };
-
-  return (
-    <AnimatedPressable
-      entering={FadeInDown.delay(index * 100).springify()}
-      layout={Layout.springify()}
-      style={[styles.postItem, animatedStyle]}
-      onPressIn={handlePressIn}
-      onPressOut={handlePressOut}
-    >
-      <Text style={styles.postTitle} numberOfLines={2}>
-        {post.title}
-      </Text>
-      <Text style={styles.postBody} numberOfLines={3}>
-        {post.body}
-      </Text>
-      <Text style={styles.postId}>Post #{post.id}</Text>
-    </AnimatedPressable>
-  );
-}
 
 export default function HomeScreen() {
   const { posts, loading, error, fetchPosts, refreshData } = usePostStore();
@@ -84,7 +40,7 @@ export default function HomeScreen() {
   };
 
   const renderPost = ({ item, index }: { item: any; index: number }) => (
-    <PostItem post={item} index={index} />
+    <PostItemCard post={item} index={index} />
   );
 
   if (error) {

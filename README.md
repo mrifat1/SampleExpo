@@ -6,7 +6,7 @@ A modern React Native app built with Expo that demonstrates advanced mobile deve
 
 - **API Integration**: Fetches data from JSONPlaceholder API with error handling and refresh functionality
 - **State Management**: Zustand for predictable and efficient state management
-- **Navigation**: Tab-based navigation with stack navigation support
+- **Navigation**: Tab-based navigation with stack navigation support(React Navigation)
 - **Forms**: React Hook Form with validation and error handling
 - **Animations**: Smooth Reanimated animations for enhanced user experience
 - **Push Notifications**: Complete Expo notification system implementation
@@ -70,7 +70,6 @@ SampleExpo/
 ├── navigation/         # Navigation configuration
 ├── screens/            # App screens
 ├── stores/             # Zustand stores
-├── utils/              # Utility functions
 ├── assets/             # Images, icons, fonts
 └── app.json            # Expo configuration
 ```
@@ -137,11 +136,30 @@ eas build --profile production --platform all
 
 ### Push Notifications
 - Configured in `app.json` plugins
-- Device registration in `utils/registerForPushNotificationsAsync.ts`
+- Device registration in `store/useNotificationStore.ts`
+- Push token displayed in app for testing
+- Test notifications via [Expo Push Notifications Tool](https://expo.dev/notifications)
 
 ### Bundle Identifiers
 - iOS: `com.mahmudrifat.sampleexpo`
 - Android: `com.mahmudrifat.sampleexpo`
+
+## Testing Push Notifications
+
+### Method 1: In-App Testing
+1. Open the app and navigate to the **Notifications** tab
+2. Grant notification permissions when prompted
+3. The app will display your **Expo Push Token** in the notification status card
+4. Use the "Send Test" button to send a local test notification
+
+### Method 2: External Testing via Expo Tool
+1. Copy the **Expo Push Token** from the app's notification screen
+2. Visit [Expo Push Notifications Tool](https://expo.dev/notifications)
+3. Paste the token in the "Recipient" field
+4. Add a message title and body
+5. Click "Send a Notification" to test
+
+**Note**: For production builds with EAS Build, you'll need to upload push notification credentials as mentioned in the [Expo documentation](https://expo.dev/notifications).
 
 ## Scripts
 

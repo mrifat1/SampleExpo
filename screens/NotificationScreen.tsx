@@ -3,20 +3,20 @@ import * as Notifications from 'expo-notifications';
 import { Bell, BellRing, CircleCheck as CheckCircle, Send, Trash2, Circle as XCircle } from 'lucide-react-native';
 import React, { useEffect } from 'react';
 import {
-    FlatList,
-    Platform,
-    Pressable,
-    ScrollView,
-    StyleSheet,
-    Text,
-    View
+  FlatList,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View
 } from 'react-native';
 import Animated, {
-    FadeInDown,
-    Layout,
-    useAnimatedStyle,
-    useSharedValue,
-    withSpring,
+  FadeInDown,
+  Layout,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
 } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -93,11 +93,6 @@ export default function NotificationsScreen() {
     <SafeAreaView style={styles.container} edges={Platform.OS === 'ios' ? ['top'] : ['top', 'left', 'right']}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Notifications</Text>
-        {/* <View style={styles.headerActions}>
-          <Pressable style={styles.headerButton}>
-            <Settings size={24} color="#6b7280" />
-          </Pressable>
-        </View> */}
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
