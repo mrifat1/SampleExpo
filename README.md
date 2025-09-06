@@ -33,6 +33,8 @@ A modern React Native app built with Expo that demonstrates advanced mobile deve
 - npm or yarn
 - Expo CLI (`npm install -g @expo/cli`)
 - EAS CLI (`npm install -g eas-cli`)
+- **For iOS development**: Xcode (latest version) and Apple Developer Account ($99/year)
+- **For Android development**: Android Studio and Google Play Console Account ($25 one-time)
 
 ### Installation
 
@@ -126,6 +128,21 @@ eas build --profile production --platform all
    eas submit --platform ios
    eas submit --platform android
    ```
+
+## App Store Requirements
+
+### Google Play Store
+- Google Play Console developer account ($25 one-time fee)
+- Android Studio for testing and debugging
+- App signing with keystore
+- Store listing with screenshots, description, and privacy policy
+
+### Apple App Store
+- Apple Developer Program account ($99/year)
+- Xcode (required for iOS development and testing)
+- App Store Connect for app management
+- App review process (1-7 days)
+- Store listing with screenshots, description, and privacy policy
 
 ## Configuration
 
